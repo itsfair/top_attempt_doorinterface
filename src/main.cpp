@@ -7,17 +7,21 @@
 WifiManager wifi;
 WebInterface web;
 NukiManager nuki;
+bool nukiStarted = false;
 bool webStarted = false;
 
 void setup() {
     Serial.begin(115200);
     wifi.begin();
-    nuki.begin();
 }
 
 void loop() {
     wifi.loop();
-    nuki.loop();
+    if (!nukiStarted && wifi.isConnected() && !wifi.isApActive()) {
+        nuki.begin();
+        nukiStarted = true;
+    }
+    if (nukiStarted) nuki.loop();
     if (!webStarted && wifi.isConnected() && !wifi.isApActive()) {
         web.begin(wifi, nuki);
         webStarted = true;

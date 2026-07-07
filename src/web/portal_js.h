@@ -48,7 +48,14 @@ $('cfg').onsubmit = async (e) => {
   const fd = new FormData($('cfg'));
   $('saveBtn').disabled = true;
   showOverlay('verbinde ...');
-  await fetch('/save', { method:'POST', body: fd });
+  const resp = await fetch('/save', { method:'POST', body: fd });
+  if (!resp.ok) {
+    const e = await resp.json().catch(() => ({}));
+    hideOverlay();
+    $('status').textContent = e.error || 'Fehler beim Speichern';
+    $('saveBtn').disabled = false;
+    return;
+  }
   pollStatus();
 };
 

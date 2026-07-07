@@ -189,6 +189,9 @@ lib/
   erst auf "okay" in Dateien geschrieben.
 - Schritte werden vor dem Anlegen erklärt, nicht automatisch committed.
 - `git commit` nur auf ausdrücklichen Wunsch.
+- **Kein Build-Test nach jeder kleinen Änderung.** Der Nutzer kompiliert/flasht
+  selbst und gibt Bescheid bei Problemen. Builds nur auf ausdrücklichen Wunsch
+  oder bei tiefergehenden Refactorings.
 
 ## Offene TODOs (Reihenfolge grob nach Priorität)
 

@@ -163,10 +163,13 @@ void WifiManager::handleSave() {
     String ssid = _server.arg("ssid");
     String pass = _server.arg("pass");
     String hostname = _server.arg("hostname");
-    Serial.printf("[HTTP] POST /save ssid='%s'\n", ssid.c_str());
+    Serial.printf("[HTTP] POST /save ssid='%s' hostname='%s'\n", ssid.c_str(), hostname.c_str());
     if (ssid.length() == 0) { _server.send(400, "text/plain", "SSID fehlt"); return; }
 
-    if (hostname.length() > 0) setHostname(hostname);
+    if (hostname.length() > 0 && !setHostname(hostname)) {
+        _server.send(400, "application/json", "{\"error\":\"Hostname ungültig (nur a-z, 0-9, -; nicht mit - beginnen/enden)\"}");
+        return;
+    }
 
     _prefs.begin("wifi", false);
     _prefs.putString("ssid", ssid);
